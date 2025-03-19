@@ -83,8 +83,8 @@ install_php() {
     # target=$(get_target)
 
     # Build PHP
-    echo "Running buildconfig..."
-    ./buildconf --force || exit 1
+#    echo "Running buildconfig..."
+#    ./buildconf --force || exit 1
     echo "Running ./configure $configure_options"
     ./configure $configure_options || exit 1
     echo "Running make \"$make_flags\""
@@ -115,80 +115,14 @@ construct_configure_options() {
   # many options included below are not applicable to newer PHP versions
   # including these will trigger a build warning, but will not b
   global_config="--prefix=$install_path \
-    --enable-bcmath \
-    --enable-calendar \
-    --enable-dba \
-    --enable-exif \
-    --enable-fpm \
-    --enable-ftp \
-    --enable-gd \
-    --enable-gd-native-ttf \
-    --enable-intl \
-    --enable-mbregex \
-    --enable-mbstring \
-    --enable-mysqlnd \
-    --enable-pcntl \
-    --enable-shmop \
-    --enable-soap \
-    --enable-sockets \
-    --enable-sysvmsg \
-    --enable-sysvsem \
-    --enable-sysvshm \
-    --enable-wddx \
-    --enable-zip \
     --sysconfdir=$install_path \
     --with-config-file-path=$install_path \
-    --with-config-file-scan-dir=$install_path/conf.d \
-    --with-curl \
-    --with-external-gd \
-    --with-fpm-group=www-data \
-    --with-fpm-user=www-data \
-    --with-gd \
-    --with-mhash \
-    --with-mysql=mysqlnd \
-    --with-mysqli=mysqlnd \
-    --with-pdo-mysql=mysqlnd \
-    --with-xmlrpc \
-    --with-zip \
-    --with-zlib \
-    --without-snmp"
+    --with-config-file-scan-dir=$install_path/conf.d"
 
   if [ "$PHP_CONFIGURE_OPTIONS" = "" ]; then
     local configure_options="$(os_based_configure_options) $global_config"
   else
     local configure_options="$PHP_CONFIGURE_OPTIONS $global_config"
-  fi
-
-  if [ "${PHP_WITHOUT_PEAR:-no}" != "no" ]; then
-    configure_options="$configure_options --without-pear"
-  else
-    configure_options="$configure_options --with-pear"
-  fi
-
-  if [ "${PHP_WITHOUT_PDO_PGSQL:-no}" != "no" ]; then
-    configure_options="$configure_options"
-  else
-    local operating_system=$(uname -a)
-
-    if [[ $operating_system =~ "Darwin" ]]; then
-      exit_if_homebrew_not_installed
-
-      local libpq_path=$(homebrew_package_path libpq)
-
-      if [ -n "$libpq_path" ]; then
-        configure_options="$configure_options --with-pdo-pgsql=$libpq_path"
-      else
-        export ASDF_PKG_MISSING="$ASDF_PKG_MISSING libpq"
-      fi
-    else
-      configure_options="$configure_options --with-pdo-pgsql"
-    fi
-  fi
-
-  if [ "${PHP_WITHOUT_PCRE_JIT:-no}" != "no" ]; then
-    configure_options="$configure_options"
-  else
-    configure_options="$configure_options --without-pcre-jit"
   fi
 
   echo "$configure_options"
