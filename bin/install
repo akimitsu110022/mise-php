@@ -224,7 +224,7 @@ os_based_configure_options() {
     local freetype_path=$(homebrew_package_path freetype)
     local gettext_path=$(homebrew_package_path gettext)
     local iconv_path=$(homebrew_package_path libiconv)
-    local icu4c_path=$(homebrew_package_path icu4c)
+    local icu4c_path=$(homebrew_package_path icu4c@74)
     local jpeg_path=$(homebrew_package_path jpeg)
     local libedit_path=$(homebrew_package_path libedit)
     local libpng_path=$(homebrew_package_path libpng)
