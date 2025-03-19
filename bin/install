@@ -24,7 +24,7 @@ install_php() {
     exit_if_homebrew_not_installed
 
     local bison_path=$(homebrew_package_path bison)
-    local icu4c_path=$(homebrew_package_path icu4c)
+    local icu4c_path=$(homebrew_package_path icu4c@74)
     local krb5_path=$(homebrew_package_path krb5)
     local libedit_path=$(homebrew_package_path libedit)
     local libxml2_path=$(homebrew_package_path libxml2)
